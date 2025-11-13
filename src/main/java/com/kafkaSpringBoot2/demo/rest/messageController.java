@@ -1,6 +1,8 @@
 package com.kafkaSpringBoot2.demo.rest;
 
 
+import com.kafkaSpringBoot2.demo.payload.Student;
+import com.kafkaSpringBoot2.demo.producer.KafkaJsonProducer;
 import com.kafkaSpringBoot2.demo.producer.KafkaProducer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -14,10 +16,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class messageController {
     public final KafkaProducer kafkaProducer;
+    public final KafkaJsonProducer kafkaJsonProducer;
+
 
     @PostMapping
     public ResponseEntity<String> sendMessage(@RequestBody String message){
         kafkaProducer.sendMessage(message);
         return ResponseEntity.ok("Message sent successfully");
+    }
+
+    @PostMapping("/json")
+    public ResponseEntity<String> sendMessage(@RequestBody Student message){
+        kafkaJsonProducer.sendMessage(message);
+        return ResponseEntity.ok("Message sent successfully as JSON");
     }
 }
